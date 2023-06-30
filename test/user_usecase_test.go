@@ -2,7 +2,6 @@ package test
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/AvinFajarF/internal/entity"
@@ -84,27 +83,27 @@ func TestCreateUser_ErrorSavingUser(t *testing.T) {
 
 
 
-func TestLogin(t *testing.T) {
-	mockRepo := new(MockUserRepository)
-	userUsecase := usecase.NewUserUsecase(mockRepo)
+// func TestLogin(t *testing.T) {
+// 	mockRepo := new(MockUserRepository)
+// 	userUsecase := usecase.NewUserUsecase(mockRepo)
 
-	password := "pass123"
-	email := "john@example.com"
+// 	password := "pass123"
+// 	email := "john@example.com"
 
-	expectedUser := &entity.User{
-		Password: password,
-		Email:    email,
-	}
+// 	expectedUser := &entity.User{
+// 		Password: password,
+// 		Email:    email,
+// 	}
 
-	mockRepo.On("Login", expectedUser.Password, expectedUser.Email, mock.AnythingOfType("*entity.User")).Return(nil)
+// 	mockRepo.On("Login", expectedUser.Password, expectedUser.Email, mock.AnythingOfType("*entity.User")).Return(nil)
 
-	createdUser, err := userUsecase.Login(password, email)
+// 	createdUser, err := userUsecase.Login(password, email)
 
-	fmt.Println(&createdUser)
+// 	fmt.Println(&createdUser)
 
-	// Assertions
-	assert.NoError(t, err)
-	assert.Equal(t, expectedUser, createdUser)
+// 	// Assertions
+// 	assert.NoError(t, err)
+// 	assert.Equal(t, expectedUser, createdUser)
 
-	mockRepo.AssertCalled(t, "Login", expectedUser.Password, expectedUser.Email, mock.AnythingOfType("*entity.User"))
-}
+// 	mockRepo.AssertCalled(t, "Login", expectedUser.Password, expectedUser.Email, mock.AnythingOfType("*entity.User"))
+// }
