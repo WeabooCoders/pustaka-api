@@ -3,6 +3,7 @@ package usecase
 import (
 	"github.com/AvinFajarF/internal/entity"
 	"github.com/AvinFajarF/internal/repository"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserUsecase interface {
@@ -35,10 +36,14 @@ func (u *userUsecase) CreateUser(username, password, alamat, email string, notel
 }
 
 func (u *userUsecase) Login(email, password string) (*entity.User, error) {
-	user := &entity.User{}
-	err := u.repo.Login(email, password, user)
+	user, err := u.repo.Login(email, password)
 	if err != nil {
 		return nil, err
 	}
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		return nil, err
+	}
+
 	return user, nil
 }
