@@ -1,9 +1,11 @@
 package entity
 
-import "github.com/google/uuid"
+import "gorm.io/gorm"
+
 
 type Review struct {
-	ID        uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	gorm.Model
+	ID         string `gorm:"primaryKey"`
 	UserID      uint `gorm:"foreignKey:UserID"`
 	User        User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"user"`
 	BookID      uint `gorm:"foreignKey:BookID"`

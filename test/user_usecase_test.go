@@ -2,6 +2,7 @@ package test
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/AvinFajarF/internal/entity"
@@ -19,6 +20,13 @@ func (m *MockUserRepository) Save(user *entity.User) error {
 	return args.Error(0)
 }
 
+func (m *MockUserRepository) Login(email string, password string, user *entity.User) error {
+    args := m.Called(email, password, user)
+    return args.Error(0)
+}
+
+
+
 func TestCreateUser(t *testing.T) {
 	mockRepo := new(MockUserRepository)
 	userUsecase := usecase.NewUserUsecase(mockRepo)
@@ -28,6 +36,7 @@ func TestCreateUser(t *testing.T) {
 	alamat := "123 Main St"
 	email := "john@example.com"
 	nomorTelepon := 1234567890
+
 
 	expectedUser := &entity.User{
 		Username:      username,
@@ -71,4 +80,31 @@ func TestCreateUser_ErrorSavingUser(t *testing.T) {
 	assert.EqualError(t, err, expectedError.Error())
 
 	mockRepo.AssertCalled(t, "Save", mock.AnythingOfType("*entity.User"))
+}
+
+
+
+func TestLogin(t *testing.T) {
+	mockRepo := new(MockUserRepository)
+	userUsecase := usecase.NewUserUsecase(mockRepo)
+
+	password := "pass123"
+	email := "john@example.com"
+
+	expectedUser := &entity.User{
+		Password: password,
+		Email:    email,
+	}
+
+	mockRepo.On("Login", expectedUser.Password, expectedUser.Email, mock.AnythingOfType("*entity.User")).Return(nil)
+
+	createdUser, err := userUsecase.Login(password, email)
+
+	fmt.Println(&createdUser)
+
+	// Assertions
+	assert.NoError(t, err)
+	assert.Equal(t, expectedUser, createdUser)
+
+	mockRepo.AssertCalled(t, "Login", expectedUser.Password, expectedUser.Email, mock.AnythingOfType("*entity.User"))
 }

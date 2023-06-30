@@ -7,7 +7,7 @@ import (
 
 type UserUsecase interface {
 	CreateUser(username, password, alamat, email string, notelepon int) (*entity.User, error)
-}
+	Login(email, password string) (*entity.User, error)}
 
 type userUsecase struct {
     repo repository.UserRepository
@@ -28,6 +28,15 @@ func (u *userUsecase) CreateUser(username, password, alamat, email string, notel
 		NomorTelepon: notelepon,
 	}
 	err := u.repo.Save(user)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (u *userUsecase) Login(email, password string) (*entity.User, error) {
+	user := &entity.User{}
+	err := u.repo.Login(email, password, user)
 	if err != nil {
 		return nil, err
 	}

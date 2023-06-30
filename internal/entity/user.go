@@ -1,9 +1,10 @@
 package entity
 
-import "github.com/google/uuid"
+import "gorm.io/gorm"
 
 type User struct {
-	ID        uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	gorm.Model
+	ID        string `gorm:"primaryKey"`
 	Username string
 	Password string
 	Alamat string
