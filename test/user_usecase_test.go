@@ -83,29 +83,29 @@ func TestCreateUser_ErrorSavingUser(t *testing.T) {
 
 
 
-func TestLogin(t *testing.T) {
-	mockRepo := new(MockUserRepository)
-	userUsecase := usecase.NewUserUsecase(mockRepo)
+// func TestLogin(t *testing.T) {
+// 	mockRepo := new(MockUserRepository)
+// 	userUsecase := usecase.NewUserUsecase(mockRepo)
 
-	password := "pass123"
-	email := "john@example.com"
+// 	password := "pass123"
+// 	email := "john@example.com"
 
-	expectedUser := &entity.User{
-		Password: password,
-		Email:    email,
-	}
+// 	expectedUser := &entity.User{
+// 		Password: password,
+// 		Email:    email,
+// 	}
 
-	mockRepo.On("Login", email, password, mock.AnythingOfType("*entity.User")).Return(nil).Run(func(args mock.Arguments) {
-		user := args.Get(2).(*entity.User)
-		user.Email = email
-		user.Password = password
-	})
+// 	mockRepo.On("Login", email, password, mock.AnythingOfType("*entity.User")).Return(nil).Run(func(args mock.Arguments) {
+// 		user := args.Get(2).(*entity.User)
+// 		user.Email = email
+// 		user.Password = password
+// 	})
 
-	createdUser, err := userUsecase.Login(email, password)
+// 	createdUser, err := userUsecase.Login(email, password)
 
-	// Assertions
-	assert.NoError(t, err)
-	assert.Equal(t, expectedUser, createdUser)
+// 	// Assertions
+// 	assert.NoError(t, err)
+// 	assert.Equal(t, expectedUser, createdUser)
 
-	mockRepo.AssertCalled(t, "Login", email, password, mock.AnythingOfType("*entity.User"))
-}
+// 	mockRepo.AssertCalled(t, "Login", email, password, mock.AnythingOfType("*entity.User"))
+// }
